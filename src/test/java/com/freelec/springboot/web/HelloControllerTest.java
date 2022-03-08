@@ -1,24 +1,35 @@
 package com.freelec.springboot.web;
 
+import com.freelec.springboot.config.auth.SecurityConfig;
 import com.freelec.springboot.web.dto.HelloResponseDto;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = {HelloController.class})
+@WebMvcTest(controllers = HelloController.class,
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+        }
+)
 class HelloControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
+    @WithMockUser(roles="USER")
     @Test
     void hello_리턴() throws Exception {
         String hello = "hello";
@@ -27,6 +38,7 @@ class HelloControllerTest {
 
     }
 
+    @WithMockUser(roles="USER")
     @Test
     void hello_dto() throws Exception {
         String name = "hhh";
