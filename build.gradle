@@ -45,6 +45,9 @@ dependencies {
     //session db
     implementation('org.springframework.session:spring-session-jdbc')
 
+    // RDS mysql db
+    implementation 'mysql:mysql-connector-java'
+
     //test security compile
     testCompileOnly("org.springframework.security:spring-security-test")
 }
